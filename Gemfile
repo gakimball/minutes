@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0.rc2'
 
+gem 'getpocket', github: 'alexchee/pocket_api', require: 'pocket_api'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
