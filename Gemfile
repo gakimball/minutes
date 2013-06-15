@@ -5,6 +5,9 @@ gem 'rails', '4.0.0.rc2'
 
 gem 'getpocket', github: 'alexchee/pocket_api', require: 'pocket_api'
 
+gem 'zurb-foundation'
+gem 'jquerymobile-rails'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
