@@ -74,7 +74,7 @@ class ArticlesRetriever
   end
 
   def find(minutes = nil, type = "all")
-    biggest_under(minutes, type).tap {|article| article.content} # so the json returns the content
+    biggest_under(minutes, type).tap {|article| article.content if article} # so the json returns the content
   end
 
   def archive(id)
