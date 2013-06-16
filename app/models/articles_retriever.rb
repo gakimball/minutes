@@ -54,7 +54,12 @@ class VimeoParser
   end
 
   def info
-    HTTParty.get(info_uri).first
+    response = HTTParty.get(info_uri)
+    if response.code > 400
+      { "duration" => 0 }
+    else
+      response.first
+    end
   end
 
   def info_uri
@@ -110,6 +115,8 @@ class ArticlesRetriever
   end
 
   def parser_for(pocket_item)
+    return nil unless pocket_item["is_article"].to_i == 1 or pocket_item["has_video"].to_i == 2
+
     case pocket_item["has_video"].to_i
     when 0 then TextParser.new(url: pocket_item["resolved_url"], words: pocket_item["word_count"].to_i)
     when 2 then video_parser(pocket_item["resolved_url"])
