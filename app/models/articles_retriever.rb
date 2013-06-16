@@ -1,6 +1,8 @@
 require 'diffbot'
 
 class ArticlesRetriever
+  include ActionView::Helpers::TextHelper
+
   WPM = 200 # Data from wikipedia on average reading speed
 
   def initialize(client_key, access_token)
@@ -28,7 +30,7 @@ class ArticlesRetriever
       title: pocket_item["resolved_title"],
       excerpt: pocket_item["resolved_title"],
       minutes: pocket_item["word_count"].to_i / WPM,
-      content: content(pocket_item["resolved_url"]))
+      content: simple_format(content(pocket_item["resolved_url"])))
   end
 
   def minutes(pocket_response)
