@@ -49,7 +49,7 @@ class ServicesController < ApplicationController
   end
 
   def access_token
-    render json: { access_token: ArticlesRetriever.new(API_KEYS["pocket"]).access_token(params[:token]) }
+    render json: ArticlesRetriever.new(API_KEYS["pocket"]).access_data(params[:token])
   end
 
   def destroy

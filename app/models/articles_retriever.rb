@@ -1,5 +1,12 @@
 require 'diffbot'
 
+class PocketApi::Connection
+  def self.generate_access_data
+    response = post("/v3/oauth/authorize", {:body => MultiJson.dump({:code => @request_token, :consumer_key => @client_key}), :headers => {"Content-Type" => "application/json; charset=UTF-8", "X-Accept" => "application/json"}})
+    response.parsed_response
+  end
+end
+
 class ArticlesRetriever
   WPM = 200 # Data from wikipedia on average reading speed
 
@@ -20,11 +27,11 @@ class ArticlesRetriever
     PocketApi::Connection.generate_request_token consumer_key: @client_key, redirect_uri: uri
   end
 
-  def access_token(request_token)
+  def access_data(request_token)
     PocketApi::Connection.client_key = @client_key
     PocketApi::Connection.request_token = request_token
 
-    PocketApi::Connection.generate_access_token(request_token)
+    PocketApi::Connection.generate_access_data
   end
 
   private
