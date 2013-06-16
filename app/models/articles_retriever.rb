@@ -5,7 +5,8 @@ class ArticlesRetriever
 
   WPM = 200 # Data from wikipedia on average reading speed
 
-  def initialize(client_key, access_token)
+  def initialize(client_key, access_token = nil)
+    @client_key = client_key
     PocketApi.configure(client_key: client_key, access_token: access_token)
   end
 
@@ -15,6 +16,10 @@ class ArticlesRetriever
 
   def archive(id)
     PocketApi.modify("archive", item_id: id)
+  end
+
+  def request_token(uri)
+    PocketApi::Connection.generate_request_token consumer_key: @client_key, redirect_uri: uri
   end
 
   private

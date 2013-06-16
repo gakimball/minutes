@@ -41,7 +41,11 @@ class ServicesController < ApplicationController
       end
     end
 
-    redirect_to articles_path
+    redirect_to root_path
+  end
+
+  def token
+    render json: { request_token: ArticlesRetriever.new(API_KEYS["pocket"]).request_token(params[:uri]) }
   end
 
   def destroy
