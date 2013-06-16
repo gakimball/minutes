@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_service
 
   protected
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session.has_key?(:user_id)
   rescue ActiveRecord::RecordNotFound
@@ -36,6 +37,10 @@ class ApplicationController < ActionController::Base
     else
       redirect_to redirect_path
     end
+  end
+
+  def require_user
+    redirect_to "/auth/pocket" unless logged_in?
   end
 
   def logout!

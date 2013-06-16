@@ -15,16 +15,12 @@ class ServicesController < ApplicationController
 
         flash[:notice] = I18n.t('notifications.provider_added', provider: omnihash[:provider].capitalize)
       end
-
-      redirect_to services_path
     else
       if current_service
         session[:user_id]            = current_service.user.id
         session[:service_id]         = current_service.id
         session[:oauth_token]        = omnihash[:credentials][:token]
         session[:oauth_token_secret] = omnihash[:credentials][:secret]
-
-        redirect_to redirect_path
       else
         user         = User.new
         user.name    = omnihash[:info][:nickname]
@@ -41,10 +37,11 @@ class ServicesController < ApplicationController
           session[:oauth_token_secret] = omnihash[:credentials][:secret]
 
           flash[:notice] = I18n.t('notifications.account_created')
-          redirect_to root_path
         end
       end
     end
+
+    redirect_to articles_path
   end
 
   def destroy

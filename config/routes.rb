@@ -3,7 +3,7 @@ Minutes::Application.routes.draw do
   match '/auth/failure' => 'services#failure', via: %i(get post)
   match '/logout' => 'sessions#destroy', via: %i(get delete), as: :logout
 
-  resources :services, only: %i(index create destroy)
+  get '/article' => 'articles#show'
 
-  root to: "sessions#new"
+  root to: 'articles#index'
 end
