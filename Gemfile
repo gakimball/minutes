@@ -10,6 +10,7 @@ gem 'omniauth-pocket'
 
 gem 'zurb-foundation'
 gem 'jquerymobile-rails'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :development do
   gem 'sqlite3'
