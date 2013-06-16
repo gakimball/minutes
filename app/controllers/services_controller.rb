@@ -48,6 +48,10 @@ class ServicesController < ApplicationController
     render json: { request_token: ArticlesRetriever.new(API_KEYS["pocket"]).request_token(params[:uri]) }
   end
 
+  def access_token
+    render json: { access_token: ArticlesRetriever.new(API_KEYS["pocket"]).access_token(params[:token]) }
+  end
+
   def destroy
     service = current_user.services.find(params[:id])
     if service.respond_to?(:destroy) and service.destroy

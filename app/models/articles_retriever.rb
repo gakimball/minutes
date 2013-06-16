@@ -22,6 +22,13 @@ class ArticlesRetriever
     PocketApi::Connection.generate_request_token consumer_key: @client_key, redirect_uri: uri
   end
 
+  def access_token(request_token)
+    PocketApi::Connection.client_key = @client_key
+    PocketApi::Connection.request_token = request_token
+
+    PocketApi::Connection.generate_access_token(request_token)
+  end
+
   private
 
   def first(minutes)
