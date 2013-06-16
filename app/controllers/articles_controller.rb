@@ -8,7 +8,7 @@ class ArticlesController < ApplicationController
 
     retriever.archive(params[:current]) if params[:current]
 
-    @article = retriever.find(params[:minutes].to_i)
+    @article = retriever.find(params[:minutes].to_i, params[:type])
     respond_with @article
   end
 end

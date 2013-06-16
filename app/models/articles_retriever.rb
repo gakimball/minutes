@@ -73,8 +73,8 @@ class ArticlesRetriever
     PocketApi.configure(client_key: client_key, access_token: access_token)
   end
 
-  def find(minutes = nil)
-    biggest_under(minutes).tap {|article| article.content} # so the json returns the content
+  def find(minutes = nil, type = "all")
+    biggest_under(minutes, type).tap {|article| article.content} # so the json returns the content
   end
 
   def archive(id)
@@ -94,8 +94,8 @@ class ArticlesRetriever
 
   private
 
-  def biggest_under(minutes)
-    PocketApi.retrieve(state: "unread", detailType: "simple").
+  def biggest_under(minutes, type)
+    PocketApi.retrieve(state: "unread", detailType: "simple", contentType: type).
       reject {|_id, item| parser_for(item).nil? }.
       map {|item| build_article(item.last)}.
       reject {|article| minutes > 0 && article.minutes > minutes}.
