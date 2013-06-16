@@ -7,67 +7,9 @@ class PocketApi::Connection
   end
 end
 
-class TextParser
-  WPM = 200 # Data from wikipedia on average reading speed
-
-  def initialize(params)
-    @url = params[:url]
-    @words = params[:words]
-  end
-
-  def minutes
-    @words / WPM
-  end
-
-  def content
-    diffbot_client = Diffbot.new
-    diffbot_client.set_url(@url)
-    format_html diffbot_client.get_text
-  end
-
-  def format_html(text)
-    "<p>" + text.gsub(/\n/, "</p>\n<p>") + "</p>"
-  end
-end
-
-class VimeoParser
-  def initialize(vimeo_id)
-    @vimeo_id = vimeo_id
-  end
-
-  def minutes
-    @minutes ||= info["duration"] / 60
-  end
-
-  def content
-    @content ||= embed_info["html"]
-  end
-
-  private
-
-  def embed_info
-    HTTParty.get(embed_info_uri)
-  end
-
-  def embed_info_uri
-    "http://api.embed.ly/1/oembed?key=#{API_KEYS["embedly"]}&url=http://vimeo.com/#{@vimeo_id}"
-  end
-
-  def info
-    response = HTTParty.get(info_uri)
-    if response.code > 400
-      { "duration" => 0 }
-    else
-      response.first
-    end
-  end
-
-  def info_uri
-    "http://vimeo.com/api/v2/video/#{@vimeo_id}.json"
-  end
-end
-
 class ArticlesRetriever
+  BLACKLISTED = /slideshare\.net/
+
   def initialize(client_key, access_token = nil)
     @client_key = client_key
     PocketApi.configure(client_key: client_key, access_token: access_token)
@@ -99,6 +41,7 @@ class ArticlesRetriever
       reject {|_id, item| parser_for(item).nil? }.
       map {|item| build_article(item.last)}.
       reject {|article| minutes > 0 && article.minutes > minutes}.
+      reject {|article| blacklisted?(article.url)}.
       sort_by(&:minutes).
       last
   end
@@ -127,5 +70,9 @@ class ArticlesRetriever
     if url =~ /vimeo.com\/(\d*)/
       VimeoParser.new($1)
     end
+  end
+
+  def blacklisted?(url)
+    url =~ BLACKLISTED
   end
 end
