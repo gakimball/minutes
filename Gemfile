@@ -8,6 +8,9 @@ gem 'rails', '4.0.0.rc2'
 gem 'getpocket', github: 'elomar/pocket_api', require: 'pocket_api'
 gem 'omniauth-pocket'
 
+gem 'zurb-foundation'
+gem 'jquerymobile-rails'
+
 group :development do
   gem 'sqlite3'
   gem 'better_errors'
