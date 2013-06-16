@@ -4,7 +4,7 @@ class ArticlesController < ApplicationController
   respond_to :html, :json
 
   def show
-    retriever = ArticlesRetriever.new(API_KEYS["pocket"], session[:oauth_token])
+    retriever = ArticlesRetriever.new(API_KEYS["pocket"], params[:token] || session[:oauth_token])
 
     retriever.archive(params[:current]) if params[:current]
 

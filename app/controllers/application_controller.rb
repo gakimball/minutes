@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user
-    redirect_to "/auth/pocket" unless logged_in?
+    redirect_to "/auth/pocket" unless logged_in? || params[:token]
   end
 
   def logout!
