@@ -1,6 +1,8 @@
 development:
   diffbot: '28ffff7c4e7a56feb7102c6289ca9e40'
   pocket: '15474-4b7f34550743b5c218880c79'
+  embedly: '26e6237bafe24026aa73dc72aee5d8b6'
 production:
   diffbot: '28ffff7c4e7a56feb7102c6289ca9e40'
   pocket: '15474-4b7f34550743b5c218880c79'
+  embedly: '26e6237bafe24026aa73dc72aee5d8b6'
