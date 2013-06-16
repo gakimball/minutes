@@ -3,7 +3,7 @@ require 'json'
 
 class Diffbot
   @@uri = URI("http://www.diffbot.com/api/article")
-  @@params = { :token => "33f61178357ff014443e86f4d5356df7"}
+  @@params = { token: API_KEYS["diffbot"] }
   
   def set_url(content_url)
     @@params[:url] = content_url;

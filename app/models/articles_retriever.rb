@@ -1,3 +1,5 @@
+require 'diffbot'
+
 class ArticlesRetriever
   WPM = 200 # Data from wikipedia on average reading speed
 
@@ -25,10 +27,17 @@ class ArticlesRetriever
       url: pocket_item["resolved_url"],
       title: pocket_item["resolved_title"],
       excerpt: pocket_item["resolved_title"],
-      minutes: pocket_item["word_count"].to_i / WPM)
+      minutes: pocket_item["word_count"].to_i / WPM,
+      content: content(pocket_item["resolved_url"]))
   end
 
   def minutes(pocket_response)
     pocket_response["word_count"].to_i / WPM
+  end
+
+  def content(url)
+    diffbot_client = Diffbot.new
+    diffbot_client.set_url(url)
+    diffbot_client.get_text
   end
 end
