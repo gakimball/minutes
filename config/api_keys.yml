@@ -1,3 +1,6 @@
 development:
   diffbot: '28ffff7c4e7a56feb7102c6289ca9e40'
   pocket: '15474-4b7f34550743b5c218880c79'
+production:
+  diffbot: '28ffff7c4e7a56feb7102c6289ca9e40'
+  pocket: '15474-4b7f34550743b5c218880c79'
