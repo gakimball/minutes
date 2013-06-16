@@ -36,11 +36,11 @@ class VimeoParser
   end
 
   def minutes
-    info["duration"] / 60
+    @minutes ||= info["duration"] / 60
   end
 
   def content
-    embed_info["html"]
+    @content ||= embed_info["html"]
   end
 
   private
@@ -50,7 +50,7 @@ class VimeoParser
   end
 
   def embed_info_uri
-    "http://api.embed.ly/1/oembed?url=http://vimeo.com/#{@vimeo_id}"
+    "http://api.embed.ly/1/oembed?key=#{API_KEYS["embedly"]}&url=http://vimeo.com/#{@vimeo_id}"
   end
 
   def info
