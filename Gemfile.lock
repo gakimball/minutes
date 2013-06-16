@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/elomar/pocket_api.git
-  revision: b39b33d25f9c7e421d47e23d76e9919ba9c80e4f
+  revision: a9ff9a17b7fa73c5759a813a1ea99222c6a211f3
   specs:
     getpocket (0.0.2)
       httparty
