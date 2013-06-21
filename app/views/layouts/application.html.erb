@@ -2,19 +2,8 @@
 <html>
 <head>
   <title>Minutes</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
 </head>
 <body>
-
-<% if logged_in? %>
-  <%= link_to 'Logout', logout_path %>
-<% else %>
-  <%= link_to 'Login with pocket', new_session_path %>
-<% end %>
-
-<%= yield %>
-
+  <%= yield %>
 </body>
 </html>

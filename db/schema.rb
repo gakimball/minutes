@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130616001106) do
+ActiveRecord::Schema.define(version: 20130621035323) do
 
   create_table "services", force: true do |t|
     t.integer  "user_id"
@@ -19,8 +19,10 @@ ActiveRecord::Schema.define(version: 20130616001106) do
     t.string   "uid"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token"
   end
 
+  add_index "services", ["token"], name: "index_services_on_token"
   add_index "services", ["user_id"], name: "index_services_on_user_id"
 
   create_table "users", force: true do |t|
@@ -28,6 +30,9 @@ ActiveRecord::Schema.define(version: 20130616001106) do
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token"
   end
+
+  add_index "users", ["token"], name: "index_users_on_token"
 
 end

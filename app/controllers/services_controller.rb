@@ -1,68 +1,34 @@
 class ServicesController < ApplicationController
-  def new; end
-
   def create
     current_service = Service.where(provider: omnihash[:provider], uid: omnihash[:uid]).first
+    token = SecureRandom.hex(24)
 
-    if logged_in?
-      if current_service
-        flash[:notice] = I18n.t('notifications.provider_already_connected', provider: omnihash[:provider].capitalize)
-      else
-        current_user.services.create!({
-          provider: omnihash[:provider],
-          uid: omnihash[:uid]
-        })
-
-        flash[:notice] = I18n.t('notifications.provider_added', provider: omnihash[:provider].capitalize)
-      end
+    if current_service
+      current_service.user.update_attribute :token, token
+      current_service.update_attribute :token, omnihash[:credentials][:token]
     else
-      if current_service
-        session[:user_id]            = current_service.user.id
-        session[:service_id]         = current_service.id
-        session[:oauth_token]        = omnihash[:credentials][:token]
-        session[:oauth_token_secret] = omnihash[:credentials][:secret]
-      else
-        user         = User.new
-        user.name    = omnihash[:info][:nickname]
-        user.email   = omnihash[:info][:email]
-        user_service = user.services.build({
-          provider: omnihash[:provider],
-          uid: omnihash[:uid]
-        })
+      user = User.new(
+        name: omnihash[:info][:nickname],
+        email: omnihash[:info][:email],
+        token: token)
 
-        if user.save!
-          session[:user_id]            = user.id
-          session[:service_id]         = user_service.id
-          session[:oauth_token]        = omnihash[:credentials][:token]
-          session[:oauth_token_secret] = omnihash[:credentials][:secret]
+      user.services.build(
+        provider: omnihash[:provider],
+        uid: omnihash[:uid],
+        token: omnihash[:credentials][:token])
 
-          flash[:notice] = I18n.t('notifications.account_created')
-        end
-      end
+      user.save!
     end
 
-    redirect_to root_path
+    redirect_to auth_success_url(token: token)
   end
 
-  def token
-    render json: { request_token: ArticlesRetriever.new(API_KEYS["pocket"]).request_token(params[:uri]) }
-  end
-
-  def access_token
-    render json: ArticlesRetriever.new(API_KEYS["pocket"]).access_data(params[:token])
-  end
-
-  def destroy
-    service = current_user.services.find(params[:id])
-    if service.respond_to?(:destroy) and service.destroy
-      flash[:notice] = I18n.t('notifications.provider_unlinked', provider: service.provider.capitalize)
-      redirect_to services_path
-    end
+  def success
+    render :close_window
   end
 
   def failure
-    flash[:error] = I18n.t('notifications.authentication_error')
-    redirect_to root_url
+    render :close_window
   end
 
   private
